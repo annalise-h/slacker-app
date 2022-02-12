@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "annahospedales",
+    "password": null,
+    "database": "slacker_db_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "annahospedales",
+    "password": null,
+    "database": "slacker_db_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "annahospedales",
+    "password": null,
+    "database": "slacker_db_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
