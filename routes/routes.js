@@ -1,9 +1,11 @@
 const bcrypt = require("bcrypt");
+const multer = require("multer");
 const { User } = require("../models");
 const express = require("express");
 const router = express.Router();
 
-router.post("/users/register", (req, res) => {
+router.post("/users/register", multer().none(), (req, res) => {
+  console.log(req.body);
   const { username, email, password } = req.body;
 
   bcrypt.hash(password, 10, async (err, hash) => {
@@ -14,16 +16,14 @@ router.post("/users/register", (req, res) => {
         password: hash,
       });
 
-      res.json({
-        id: newUser.id,
-      });
+      res.redirect("/chat.html");
     } catch (e) {
       console.log(e);
     }
   });
 });
 
-router.post("/users/login", async (req, res) => {
+router.post("/users/login", multer().none(), async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -32,9 +32,7 @@ router.post("/users/login", async (req, res) => {
     });
     bcrypt.compare(password, user.password, (err, match) => {
       if (match) {
-        res.status(200).json({
-          id: user.id,
-        });
+        res.redirect("/chat.html");
       } else {
         res.status(422).json({
           message: "Passwords don't match",
