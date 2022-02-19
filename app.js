@@ -11,11 +11,11 @@ const app = express();
 // set public view directory
 app.use(express.static(path.join(__dirname, "public")));
 
-// express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object
-app.use(express.json());
 // express.urlencoded() is a method inbuilt in express to recognize the incoming Request Object as strings or arrays.
 // this also will read html forms
 app.use(express.urlencoded({ extended: false }));
+// express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object
+app.use(express.json());
 
 app.use(cookieParser());
 
