@@ -5,6 +5,7 @@ const { Server } = require("socket.io");
 const routes = require("./routes/routes");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const db = require("./models");
 
 const app = express();
 
@@ -19,20 +20,25 @@ app.use(express.json());
 
 app.use(cookieParser());
 
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const store = new SequelizeStore({ db: db.sequelize });
+
 const oneDay = 1000 * 60 * 60 * 24;
-app.use(session({
-  secret: 'shhhhhhh',
-  saveUninitialized: false,
-  cookie: { maxAge: oneDay},
-  resave: false
-}));
+app.use(
+  session({
+    secret: "shhhhhhh",
+    saveUninitialized: false,
+    cookie: { maxAge: oneDay },
+    resave: false,
+    store: store,
+  })
+);
+
+store.sync();
 
 app.use("/", routes);
 
-let session;
-
 app.get("/", (req, res) => {
-  session=req.session;
   res.sendFile(__dirname + "/index.html");
 });
 

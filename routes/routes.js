@@ -5,7 +5,6 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/users/register", multer().none(), (req, res) => {
-  console.log(req.body);
   const { username, email, password } = req.body;
 
   bcrypt.hash(password, 10, async (err, hash) => {
@@ -32,6 +31,7 @@ router.post("/users/login", multer().none(), async (req, res) => {
     });
     bcrypt.compare(password, user.password, (err, match) => {
       if (match) {
+        req.session.user = user;
         res.redirect("/chat.html");
       } else {
         res.status(422).json({
