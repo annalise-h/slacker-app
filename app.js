@@ -3,6 +3,7 @@ const http = require("http");
 const path = require("path");
 const { Server } = require("socket.io");
 const routes = require("./routes/routes");
+const session = require("express-session");
 
 const app = express();
 
@@ -14,6 +15,14 @@ app.use(express.json());
 // express.urlencoded() is a method inbuilt in express to recognize the incoming Request Object as strings or arrays.
 // this also will read html forms
 app.use(express.urlencoded({ extended: false }));
+
+const oneDay = 1000 * 60 * 60 * 24;
+app.use(session({
+  secret: 'shhhhhhh',
+  saveUninitialized: false,
+  cookie: { maxAge: oneDay},
+  resave: false
+}));
 
 app.use("/", routes);
 
