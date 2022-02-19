@@ -4,6 +4,7 @@ const path = require("path");
 const { Server } = require("socket.io");
 const routes = require("./routes/routes");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(express.urlencoded({ extended: false }));
 // express.json() is a method inbuilt in express to recognize the incoming Request Object as a JSON Object
 app.use(express.json());
 
+app.use(cookieParser());
+
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(session({
   secret: 'shhhhhhh',
@@ -26,7 +29,10 @@ app.use(session({
 
 app.use("/", routes);
 
+let session;
+
 app.get("/", (req, res) => {
+  session=req.session;
   res.sendFile(__dirname + "/index.html");
 });
 
