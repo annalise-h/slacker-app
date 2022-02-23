@@ -4,13 +4,14 @@
     <title>Socket.IO chat</title>
     <style>
       body {
-        margin: 0;
+        margin: 20px;
         padding-bottom: 3rem;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           Helvetica, Arial, sans-serif;
+        background: #508bfc;
       }
       #form {
-        background: rgba(0, 0, 0, 0.15);
+        background: lightgray;
         padding: 0.25rem;
         position: fixed;
         bottom: 0;
@@ -47,12 +48,14 @@
       }
       #messages > li {
         padding: 0.5rem 1rem;
+        background: lightgray;
       }
       #messages > li:nth-child(odd) {
         background: #efefef;
       }
     </style>
   </head>
+  <body>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>

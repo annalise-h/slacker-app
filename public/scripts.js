@@ -1,13 +1,12 @@
 // io() function will give us an individual socket
 const socket = io({
-  autoConnect: false,
+  autoConnect: true,
 });
 
 $(document).ready(() => {
   const sessionID = localStorage.getItem("sessionID");
   if (sessionID) {
     socket.auth = { sessionID };
-    socket.connect();
   }
 });
 
