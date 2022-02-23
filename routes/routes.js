@@ -3,6 +3,7 @@ const { User, ChatRoom } = require("../models");
 const bcrypt = require("bcrypt");
 const multer = require("multer");
 const express = require("express");
+const { redirect } = require("express/lib/response");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -65,9 +66,7 @@ router.post("/createChat", async (req, res) => {
       sessionId,
     });
 
-    res.status(200).json({
-      sessionId: newChat.sessionId,
-    });
+    res.status(200).redirect(`/chatRoom/${sessionId}`)
   } catch (e) {
     res.status(500).json({
       message: "error creating chat",
@@ -75,12 +74,12 @@ router.post("/createChat", async (req, res) => {
   }
 });
 
-router.get("/chatRoom/:sessionId", async (req, res) => {
+router.post("/chatRoom/:sessionId", async (req, res) => {
   const sessionId = req.params.sessionId;
 
   try {
     const chatRoom = await ChatRoom.findOne({ where: { sessionId } });
-    res.status(200).render("chat", { ChatRoom });
+    res.status(200).render("chat", { chatRoom });
   } catch (e) {
     res.status(500).json({
       message: "error finding chat",
