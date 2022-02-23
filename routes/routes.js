@@ -1,8 +1,17 @@
+const { User, ChatRoom } = require("../models");
+
 const bcrypt = require("bcrypt");
 const multer = require("multer");
-const { User } = require("../models");
 const express = require("express");
 const router = express.Router();
+
+router.get("/", (req, res) => {
+  res.render("register");
+});
+
+router.get("/login", (req, res) => {
+  res.render("login");
+});
 
 router.post("/users/register", multer().none(), (req, res) => {
   const { username, email, password } = req.body;
@@ -15,7 +24,8 @@ router.post("/users/register", multer().none(), (req, res) => {
         password: hash,
       });
 
-      res.redirect("/chat.html");
+      req.session.user = newUser;
+      res.status(200).render("chat", { newUser });
     } catch (e) {
       console.log(e);
     }
@@ -32,7 +42,7 @@ router.post("/users/login", multer().none(), async (req, res) => {
     bcrypt.compare(password, user.password, (err, match) => {
       if (match) {
         req.session.user = user;
-        res.redirect("/chat.html");
+        res.render("chat", { user });
       } else {
         res.status(422).json({
           message: "Passwords don't match",
@@ -43,6 +53,37 @@ router.post("/users/login", multer().none(), async (req, res) => {
     console.log(e);
     res.status(404).json({
       message: "User not found",
+    });
+  }
+});
+
+router.post("/createChat", async (req, res) => {
+  const sessionId = Math.random().toString(36).substr(2, 9);
+
+  try {
+    const newChat = await ChatRoom.create({
+      sessionId,
+    });
+
+    res.status(200).json({
+      sessionId: newChat.sessionId,
+    });
+  } catch (e) {
+    res.status(500).json({
+      message: "error creating chat",
+    });
+  }
+});
+
+router.get("/chatRoom/:sessionId", async (req, res) => {
+  const sessionId = req.params.sessionId;
+
+  try {
+    const chatRoom = await ChatRoom.findOne({ where: { sessionId } });
+    res.status(200).render("chat", { ChatRoom });
+  } catch (e) {
+    res.status(500).json({
+      message: "error finding chat",
     });
   }
 });
