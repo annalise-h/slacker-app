@@ -26,7 +26,7 @@ router.post("/users/register", multer().none(), (req, res) => {
       });
 
       req.session.user = newUser;
-      res.status(200).render("chat", { newUser });
+      res.status(200).redirect("/invite.html");
     } catch (e) {
       console.log(e);
     }
@@ -43,7 +43,7 @@ router.post("/users/login", multer().none(), async (req, res) => {
     bcrypt.compare(password, user.password, (err, match) => {
       if (match) {
         req.session.user = user;
-        res.render("chat", { user });
+        res.redirect("/invite.html");
       } else {
         res.status(422).json({
           message: "Passwords don't match",
@@ -66,7 +66,7 @@ router.post("/createChat", async (req, res) => {
       sessionId,
     });
 
-    res.status(200).redirect(`/chatRoom/${sessionId}`)
+    res.status(200).redirect(`/chatRoom/${sessionId}`);
   } catch (e) {
     res.status(500).json({
       message: "error creating chat",

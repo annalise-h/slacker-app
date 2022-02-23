@@ -23,8 +23,12 @@ socket.on("session", ({ sessionID, userID, username }) => {
 // listen for when our server receives a message from the socket
 socket.on("message-received", (msg) => {
   $("#messages").append(`
-  <p> ${socket.username}: <p>
-  <li> ${msg} </li>`);
+  <div class="msg">
+    <p> ${
+      socket.username
+    }: <span class="timestamp"> ${new Date().toLocaleTimeString()}</span> </p> 
+    <li> ${msg} </li>
+  </div>`);
   $("#input").val("");
 });
 
