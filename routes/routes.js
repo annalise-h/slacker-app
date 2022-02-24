@@ -74,12 +74,25 @@ router.post("/createChat", async (req, res) => {
   }
 });
 
+router.get("/chatRoom/:sessionId", async (req, res) => {
+  const sessionId = req.params.sessionId;
+
+  try {
+    const chatRoom = await ChatRoom.findOne({ where: { sessionId } });
+    res.status(200).render("chat");
+  } catch (e) {
+    res.status(500).json({
+      message: "error finding chat",
+    });
+  }
+});
+
 router.post("/chatRoom/:sessionId", async (req, res) => {
   const sessionId = req.params.sessionId;
 
   try {
     const chatRoom = await ChatRoom.findOne({ where: { sessionId } });
-    res.status(200).render("chat", { chatRoom });
+    res.status(200).render("chat");
   } catch (e) {
     res.status(500).json({
       message: "error finding chat",
