@@ -24,10 +24,7 @@ socket.on("session", ({ sessionID, userID, username }) => {
 socket.on("message-received", (msg) => {
   $("#messages").append(`
   <div class="msg">
-    <p> ${
-      socket.username
-    }: <span class="timestamp"> ${new Date().toLocaleTimeString()}</span> </p> 
-    <li> ${msg} </li>
+    <li> ${msg} <span class="timestamp"> ${new Date().toLocaleTimeString()}</span>   </li>
   </div>`);
   $("#input").val("");
 });
